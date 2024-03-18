@@ -1,0 +1,51 @@
+package com.example.movieclub.config.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+
+@Configuration
+public class CustomSecurityConfig {
+    private static final String USER_ROLE = "USER";
+    private static final String EDITOR_ROLE = "EDITOR";
+    private static final String ADMIN_ROLE = "ADMIN";
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((authz) -> authz
+                .requestMatchers("/movie-rating").authenticated()
+                .requestMatchers("/admin/**").hasAnyRole(EDITOR_ROLE, ADMIN_ROLE)
+                .anyRequest().permitAll())
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .permitAll())
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout/**", HttpMethod.GET.name()))
+                        .logoutSuccessUrl("/login?logout").permitAll()); // logout może być czymkolwiek nawet innym wyrazem
+                            // .login?logout oznacza, że możemy dodać dodatkowy parametr sprawdzający czy udało się wykonać operację
+        http.csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")); // wyłącza ochronę csrf dla /h2-console
+        http.headers().frameOptions().sameOrigin(); // /h2-console tylko po localhost:8080, nie może mieć innego odnośnika origin
+        return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(
+                "/img/**",
+                "/scripts/**",
+                "/styles/**"
+        );
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // dodanie bcryptu do haseł użytkowników
+    }
+}

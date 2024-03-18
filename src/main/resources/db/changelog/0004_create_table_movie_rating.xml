@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+    <changeSet id="0004-1" author="Igor">
+        <preConditions>
+            <not>
+                <tableExists tableName="movie_rating"/>
+            </not>
+        </preConditions>
+        <createTable tableName="movie_rating">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"> <!-- dodajemy id usera ktory oddaje ocene-->
+                <constraints nullable="false"
+                             foreignKeyName="fk_movie_rating_user_id"
+                             referencedTableName="users"
+                             referencedColumnNames="id"
+                />
+            </column>
+            <column name="movie_id" type="BIGINT"> <!-- dodajemy id movie ktore bedzie oceniane -->
+                <constraints nullable="false"
+                             foreignKeyName="fk_movie_rating_movie_id"
+                             referencedTableName="movie"
+                             referencedColumnNames="id"
+                />
+            </column>
+            <column name="rating" type="INT"> <!-- i ocena od 1 do 5-->
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="unique_movie_rating"
+                             tableName="movie_rating"
+                             columnNames="user_id, movie_id"/> <!-- constraint ktory zabroni dac wiecej niz jedna ocena na jeden film-->
+        <rollback>
+            <dropTable tableName="movie_rating"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

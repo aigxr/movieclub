@@ -1,0 +1,11 @@
+insert into genre (id, name, description) values (0, 'Uncategorized', 'Non category list of movies');
+insert into genre (name, description) values ('Romance', 'Suspendisse accumsan tortor quis turpis. Sed ante.');
+insert into genre (name, description) values ('Fantasy', 'Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.');
+insert into genre (name, description) values ('Horror', 'In congue. Etiam justo. Etiam pretium iaculis justo.');
+insert into genre (name, description) values ('Documentary', 'In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante.');
+insert into genre (name, description) values ('Musical', 'Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula.');
+insert into genre (name, description) values ('History', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus.');
+insert into genre (name, description) values ('Sci-Fi', 'Ut at dolor quis odio consequat varius. Integer ac leo. Pellentesque ultrices mattis odio.');
+insert into genre (name, description) values ('Action', 'In congue. Etiam justo.');
+insert into genre (name, description) values ('Comedy', 'Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.');
+insert into genre (name, description) values ('Animation', 'In congue. Etiam justo. Etiam pretium iaculis justo.');

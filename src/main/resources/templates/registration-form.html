@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+</head>
+<body>
+<main class="main-content" layout:fragment="content" sec:authorize="!isAuthenticated()">
+    <h2 class="list-heading">Zarejestruj się</h2>
+    <form action="#" th:action="@{/register}" method="post" class="mc-form" th:object="${user}">
+        <label for="username">Nazwa użytkownika</label>
+        <input id="username" type="text" placeholder="nazwa" th:field="*{username}">
+        <hr>
+        <label for="email">Adres email</label>
+        <input id="email" type="email" placeholder="email" th:field="*{email}">
+        <label for="password">Hasło</label>
+        <input id="password" type="password" placeholder="hasło" th:field="*{password}">
+        <button type="submit">Zarejestruj się</button>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete user</title>
+</head>
+<body>
+<main class="main-content" layout:fragment="content">
+    <p class="notification-bar" th:if="${notification}" th:text="${notification}">Powiadomienia</p>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>Nazwa użytkownika</th>
+                <th>Role</th>
+                <th>Ban / Unban</th>
+                <th>Usuń</th>
+                <th>Zobacz</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user:${users}">
+                <td th:text="*{user.email}" class="text">email</td>
+                <td th:text="*{user.username}" class="text">user</td>
+                <td th:text="*{user.roles}"></td>
+<!--                <td th:text="*{user.roles}">user</td>-->
+                <td class="btn">
+                    <a th:href="@{${user.banned} ? '/admin/unban-user/' + ${user.username} : '/admin/ban-user/' + ${user.username}}">
+                    <button th:class="|${user.banned ? 'delete-button' : 'delete-button blue'}|"><i th:class="|${user.banned ? 'fa-solid fa-lock' : 'fa-solid fa-unlock'}|"></i></button>
+                    </a>
+                </td>
+                <td class="btn">
+                    <form method="post" th:action="|@{/admin/manage-user/}*{user.username}|">
+                        <button class="delete-button"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+                </td>
+                <td class="btn"><a th:href="|@{/profile/}*{user.username}|">
+                    <button class="delete-button green"><i class="fa-solid fa-search"></i></button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

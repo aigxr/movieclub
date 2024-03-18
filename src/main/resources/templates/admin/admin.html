@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>admin panel</title>
+</head>
+<body>
+<main class="main-content" layout:fragment="content">
+  <p class="notification-bar" th:if="${notification}" th:text="${notification}">Powiadomienia</p>
+  <h2 class="list-heading">Panel administracjny</h2>
+  <ul class="list-border">
+    <li><a href="#" th:href="@{/admin/dodaj-film}">Dodaj film</a></li>
+    <li><a href="#" th:href="@{/admin/dodaj-gatunek}">Dodaj gatunek</a></li>
+    <li><a href="#" th:href="@{/admin/manage-movie}">Edytuj / usuń filmy</a></li>
+    <li><a href="#" th:href="@{/admin/manage-genre}">Edytuj / usuń gatunki</a></li>
+    <li><a href="#" th:href="@{/admin/manage-user}">Zarządzaj użytkownikami</a></li>
+  </ul>
+</main>
+</body>
+</html>

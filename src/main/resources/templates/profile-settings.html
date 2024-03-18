@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>settings</title>
+</head>
+<body>
+<main class="main-content" layout:fragment="content">
+  <p class="notification-bar" th:if="${notification}" th:text="${notification}">Powiadomienia</p>
+  <div class="main-options-container">
+    <div class="options">
+      <h1>Ustawienia</h1>
+      <div class="btns">
+        <button class="profile-btn" onclick="showForm('changeProfilePicture')">Zmień profilowe</button>
+      </div>
+      <div class="btns">
+        <button class="settings-button" onclick="showForm('changeUsernameForm')">Zmień nazwę użytkownika</button>
+        <button class="settings-button" onclick="showForm('changeEmailForm')">Zmień email</button>
+        <button class="settings-button" onclick="showForm('changePasswordForm')">Zmień hasło</button>
+        <button class="settings-button" onclick="showForm('removeAccount')">Usuń konto</button>
+      </div>
+    </div>
+
+    <form th:action="@{/profile/picture}" method="post" id="changeProfilePicture" class="mc-form option-form hidden" enctype="multipart/form-data">
+      <label for="profilePicture" class="label">Zmiana zdjęcia profilowego</label>
+      <input type="file" class="settings-button" id="profilePicture" name="profilePicture" accept="image/png, image/jpeg">
+      <button type="submit">Zmień</button>
+    </form>
+
+    <form th:action="@{/profile/username}" method="post" id="changeUsernameForm" class="mc-form option-form">
+      <label for="username" class="label">Zmiana nazwy użytkownika</label>
+      <input type="text" id="username" name="username" placeholder="username123">
+      <button type="submit">Zmień</button>
+    </form>
+
+    <form th:action="@{/profile/email}" method="post" id="changeEmailForm" class="mc-form option-form hidden">
+      <label for="email" class="label">Zmiana maila</label>
+      <input type="email" id="email" name="email" placeholder="email@example.com">
+      <button type="submit">Zmień</button>
+    </form>
+
+    <form th:action="@{/profile/password}" id="changePasswordForm" method="post" class="mc-form option-form hidden">
+      <label for="oldPassword" class="label">Stare hasło</label>
+      <input type="password" id="oldPassword" name="oldPassword" placeholder="hasło123...">
+      <label for="newPassword" class="label">Nowe hasło</label>
+      <input type="password" id="newPassword" name="newPassword" placeholder="hasło123...">
+      <button type="submit">Zmień</button>
+    </form>
+
+    <form th:action="@{/profile/delete}" method="get" id="removeAccount" class="mc-form option-form hidden">
+      <label class="label">Usuwanie konta</label>
+      <button type="submit">Usuń</button>
+    </form>
+
+  </div>
+</main>
+</body>
+</html>

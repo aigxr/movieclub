@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete films</title>
+</head>
+<body>
+<main class="main-content" layout:fragment="content">
+    <div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa filmu</th>
+                <th>Orginalna nazwa</th>
+                <th>Promowane</th>
+                <th>Edytuj film</th>
+                <th>Usuń film</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="movie:${movies}">
+                <td th:text="*{movie.title}" class="text">Nazwa filmu</td>
+                <td th:text="*{movie.originalTitle}" class="text">Oryginalna nazwa filmu</td>
+                <td th:text="*{movie.promoted}" class="btn">True</td>
+                <td class="btn"><a th:href="|@{/admin/update-movie/}*{movie.id}|">
+                    <button class="delete-button blue"><i class="fa-solid fa-edit"></i></button></a>
+                </td>
+                <td class="btn">
+                    <form method="post" th:action="|@{/admin/manage-movie/}*{movie.id}|"
+                          onsubmit="confirm('Czy na pewno chcesz ten film?')">
+                    <button class="delete-button"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</main>
+</body>
+</html>
