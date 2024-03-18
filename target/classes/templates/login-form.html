@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Zaloguj się</title>
+</head>
+<body>
+<main class="main-content" layout:fragment="content" sec:authorize="!isAuthenticated()" th:onload="|@{/}|">
+    <p class="notification-bar" th:if="${notification}" th:text="${notification}">Powiadomienia</p>
+    <h2 class="list-heading">Zaloguj się</h2>
+    <form action="" th:action="@{/login}" method="post" class="mc-form">
+        <p th:if="${param.error}"
+           th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
+           class="mc-form-message">
+            Błąd logowania
+        </p>
+
+        <p th:if="${param.logout}" class="mc-form-message">
+            Zostałeś wylogowany, możesz zalogować się ponownie.
+        </p>
+        <label for="username">Adres email</label>
+        <input id="username" name="username" type="email" placeholder="email">
+        <label for="password">Hasło</label>
+        <input id="password" name="password" type="password" placeholder="hasło">
+        <button type="submit">Zaloguj się</button>
+        <p class="registration-link">Nie masz jeszcze konta? <a href="#" th:href="@{/register}">Zarejestruj się</a></p>
+    </form>
+</main>
+</body>
+</html>

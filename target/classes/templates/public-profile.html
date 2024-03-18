@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .profile-data {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 1rem;
+            border: 1px solid #6d6d6d;
+            border-radius: 10px;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<main class="main-content" layout:fragment="content">
+    <p class="notification-bar" th:if="${notification}" th:text="${notification}">Powiadomienia</p>
+    <div class="profile-box">
+
+        <div class="first-container">
+            <div class="profile-data first">
+                <div class="profile-first">
+                    <img th:if="|${user.profilePicture}|" th:src="|/img/${user.profilePicture}|" class="profile-img" alt="profile">
+                    <img th:unless="|${user.profilePicture}|" src="/img/poster-placeholder.png" class="profile-img" alt="profile">
+                    <div>
+                        <h2 th:text="${user.username}">Jan Kowalski</h2>
+                        <p class="profile-text" th:text="${user.email}">jan@kowalski.com</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 th:text="|Komentarze: ${user.comments.size()}|">32</h2>
+                    <h2 th:text="|Oceny: ${user.ratings.size()}|">23</h2>
+                </div>
+            </div>
+            <div class="profile-data rating-list">
+                <h2>Najnowsze oceny:</h2>
+                <div th:each="rating:${user.ratings.reversed()}" class="rating">
+                    <a href="#" th:href="|@{/film/}${rating.movie.id}|"><h3 th:text="*{rating.movie.originalTitle}" class="logo">Joker</h3></a>
+                    <h1 th:text="|*{rating.rating}/5|"></h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-data comments">
+            <h2>Najnowsze komentarze:</h2>
+            <h3 th:text="${user.comments.isEmpty()} ? 'No comments yet' : ''">No comments yet</h3>
+            <div class="movie-section user-comment" th:each="userComment:${user.comments.reversed()}">
+                <a href="#" th:href="|@{/film/}${userComment.movie.id}|"><h3 class="logo" th:text="*{userComment.movie.originalTitle}">Joker</h3></a>
+                <div class="first-row">
+                    <p th:text="*{user.username}">Adam Wkładam</p>
+                    <p th:text="*{userComment.date}" class="comment-time">15s temu</p>
+                </div>
+                <p class="main-comment" th:text="*{userComment.userComment}">fajny film barilm bardzo emocjonalny itp</p>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

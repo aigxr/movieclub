@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="|${movie.title} - MovieClub|">Tytuł filmu - MovieClub</title>
+</head>
+<body>
+<div class="container">
+  <main class="main-content" layout:fragment="content" id="movie-content">
+    <section class="movie">
+      <div class="movie-summary">
+        <img src="../static/img/poster-placeholder.png"
+             th:src="${movie.poster ne null} ? @{|/img/${movie.poster}|} : @{/img/poster-placeholder.png}"
+             alt="tytuł filmu"
+             th:alt="${movie.title}"
+             class="movie-summary-cover"
+        />
+        <div class="movie-summary-info">
+          <h1 class="movie-summary-title" th:text="${movie.title}">Władca pierścieni</h1>
+          <p class="movie-summary-original-title" th:text="${movie.originalTitle}">Lord of the rings</p>
+          <p class="movie-summary-item" th:text="${movie.releaseYear}">Rok: 2001</p>
+          <p class="movie-summary-item">Gatunek: <a href="#" th:text="${movie.genre}" th:href="@{|/gatunek/${movie.genre}|}">Fantasy</a></p>
+          <p class="movie-summary-item" th:text="${movie.shortDescription}">
+            Podróż odważnego hobbita i jego towarzyszy w poszukiwaniu pierścienia.
+          </p>
+        </div>
+      </div>
+      <div class="movie-rating-container movie-section">
+        <h2 class="movie-section-heading">Ocena</h2>
+        <div th:if="${movie.ratingCount}">
+          <p class="movie-rating-value" th:text="${#numbers.formatDecimal(movie.avgRating, 1, 1)}">4.0</p>
+          <p th:text="|Liczba ocen: ${movie.ratingCount}|">Liczba ocen: 134</p>
+        </div>
+        <form action="#"
+              method="post"
+              th:action="@{/movie-rating}"
+              class="movie-rating-form"
+              sec:authorize="isAuthenticated()">
+          <p>Twoja ocena</p>
+          <input type="hidden" name="movieId" th:value="${movie.id}">
+          <div class="movie-rating-buttons">
+            <button class="movie-rating-button"
+                    name="rating"
+                    th:each="i:${#numbers.sequence(1, 5)}"
+                    th:value="${i}">
+              <i class="fa-star" th:classappend="${i <= userRating ? 'fa-solid' : 'fa-regular'}"></i>
+            </button>
+          </div>
+        </form>
+        <p sec:authorize="!isAuthenticated()">
+          <a href="#" th:href="@{/login}">Zaloguj się</a>, aby oddać głos
+        </p>
+      </div>
+    </section>
+
+    <section class="movie-trailer-container movie-section">
+      <h2 class="movie-section-heading">Trailer</h2>
+      <iframe class="movie-trailer"
+              src="https://www.youtube.com/embed/V75dMMIW2B4"
+              th:src="@{|https://www.youtube.com/embed/${movie.youtubeTrailerId}|}"
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </section>
+
+    <section class="movie-section">
+      <h2 class="movie-section-heading">Opis</h2>
+      <p th:text="${movie.description}" class="movie-section-description">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus
+        odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in
+        faucibus.</p>
+    </section>
+
+    <section class="movie-section">
+      <h2 class="movie-section-heading">Komentarze</h2>
+      <form action="" th:action="|@{/film/add-comment/}${movie.id}|" class="comment" method="post">
+        <label for="userComment"></label>
+        <input type="text" id="userComment" name="userComment" class="comment-text" th:minlength="2" minlength="2" placeholder="Dodaj komentarz">
+        <button type="submit" th:class="|${user.banned ? 'btn add-comment-btn grey' : 'btn add-comment-btn blue'}|" sec:authorize="isAuthenticated()" th:disabled="${user.banned == true}"><b>Skomentuj</b></button>
+        <div class="comment-btn-box">
+          <button type="submit" class="btn add-comment-btn grey" sec:authorize="!isAuthenticated()" disabled><b>Skomentuj</b></button>
+          <p sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Zaloguj się,</a> by móc komentować</p>
+        </div>
+      </form>
+      <div class="movie-section user-comment" th:if="${comments}" th:each="comment,stats:${comments}">
+        <div class="first-row">
+
+          <a th:href="|@{/profile/}${comment.user.username}|"><img class="profile-img comment-profile" th:src="|${comment != null ? '/img/' + comment.user.profilePicture : '/img/poster-placeholder.png'}|"></a>
+          <div class="outer-box">
+            <div class="box">
+              <a th:href="|@{/profile/}${comment.user.username}|"><p th:text="'@' + *{comment.user.username}">Adam Wkładam</p></a>
+              <p class="comment-time" th:text="|${comment.seconds}|">15s temu</p>
+            </div>
+
+            <p th:text="${comment.userComment}" class="main-comment">Bardzo fajny film bardzo emoczo emocjonalny film bardzo emocjonalny itp</p>
+          </div>
+          </div>
+
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
